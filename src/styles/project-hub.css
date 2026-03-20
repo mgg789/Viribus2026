@@ -24,14 +24,14 @@
 }
 
 .projects-hub-back-btn {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   flex: 0 0 auto;
 }
 
 .projects-hub-title {
   margin: 0;
-  font-size: clamp(46px, 3.3vw, 60px);
+  font-size: clamp(39px, 3.3vw, 39px);
   font-weight: 600;
   line-height: 0.96;
   letter-spacing: -0.04em;
@@ -50,18 +50,19 @@
 }
 
 .projects-hub-column-head {
-  min-height: 80px;
-  border-radius: 22px;
+  min-height: 60px;
+  border-radius: 19px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   padding: 0 32px;
   display: flex;
   align-items: center;
+  justify-content: center;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 18px 36px rgba(0, 0, 0, 0.18);
 }
 
 .projects-hub-column-head h2 {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
@@ -86,8 +87,8 @@
 
 /* Project cards */
 .project-hub-card {
-  min-height: 378px;
-  padding: 18px 16px 18px;
+  min-height: 108px;
+  padding: 20px 22px 22px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 32px;
   background: rgba(11, 11, 12, 0.82);
@@ -169,7 +170,7 @@
 
 .project-hub-card-title {
   margin: 0;
-  font-size: clamp(31px, 2vw, 45px);
+  font-size: clamp(29px, 2vw, 29px);
   line-height: 1.02;
   font-weight: 500;
   letter-spacing: -0.04em;
@@ -177,7 +178,8 @@
 
 .project-hub-card-fire {
   margin-left: 10px;
-  font-size: 0.76em;
+  font-size: clamp(22px, 2vw, 22px);
+  display: none;
 }
 
 .project-hub-card-description {
@@ -185,8 +187,8 @@
   max-width: 92%;
   min-height: 50px;
   color: rgba(255, 255, 255, 0.62);
-  font-size: 16px;
-  line-height: 1.08;
+  font-size: 17px;
+  line-height: 1.28;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -195,15 +197,15 @@
 
 .project-hub-card-team {
   min-width: 0;
-  margin-top: 28px;
+  margin-top: 14px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 }
 
 .project-hub-card-avatar {
-  width: 58px;
-  height: 58px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   object-fit: cover;
   flex: 0 0 auto;
@@ -212,7 +214,7 @@
 .project-hub-card-team-name {
   min-width: 0;
   color: rgba(255, 255, 255, 0.52);
-  font-size: clamp(28px, 1.95vw, 40px);
+  font-size: clamp(22px, 1.95vw, 20px);
   font-weight: 500;
   letter-spacing: -0.04em;
   white-space: nowrap;
@@ -224,7 +226,7 @@
   margin-top: auto;
   padding-top: 18px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   gap: 16px;

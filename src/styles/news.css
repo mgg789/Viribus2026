@@ -10,10 +10,10 @@
 }
 
 .news-page-head {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .news-page-title {
@@ -58,7 +58,7 @@
 
 /* Reserve space for like/link controls and keep height stable */
 .news-page-mini-card .news-text {
-  padding: 0 10px 72px;
+  padding: 0 0px 72px;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;

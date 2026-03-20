@@ -36,7 +36,7 @@ export function BottomCards({ newsItem, isNewsLiked, onToggleNewsLike, onOpenNew
             <img src={assets.alignCenterIcon} alt="" />
           </button>
         </div>
-        <a className="project-link" href="#/projects/api-delivery">
+        <a className="project-link" href="#/projects/api-food-delivery">
           API для доставки еды
           <img src={assets.arrow15Icon} alt="" />
         </a>

@@ -5,9 +5,11 @@ import { BottomCards } from "./components/dashboard/BottomCards";
 import { SummaryCards } from "./components/dashboard/SummaryCards";
 import { TopBar } from "./components/layout/TopBar";
 import { NewsPage } from "./components/news/NewsPage";
+import { ProjectDetailsPage } from "./components/projects/ProjectDetailsPage";
 import { ProjectHubPage } from "./components/projects/ProjectHubPage";
 import { RecommendationsPanel } from "./components/recommendations/RecommendationsPanel";
 import { INITIAL_CHAT, NAV_LINKS, QUICK_PROMPTS, RECOMMENDATIONS } from "./data/dashboardData";
+import { PROJECT_DETAILS_BY_ID } from "./data/projectDetailsData";
 import { FEATURED_NEWS_ITEMS, MINI_NEWS_ITEMS } from "./data/newsData";
 import { PROJECT_HUB_COLUMNS } from "./data/projectHubData";
 import { nextAssistantMessage } from "./utils/chatAssistant";
@@ -16,8 +18,12 @@ function mapRecommendationsWithInstanceId() {
   return RECOMMENDATIONS.map((item, index) => ({ ...item, instanceId: `${item.id}-${index}` }));
 }
 
+function resolvePathFromHash(hashValue) {
+  return hashValue.replace(/^#/, "") || "/";
+}
+
 function resolveTabFromHash(hashValue) {
-  const path = hashValue.replace(/^#/, "") || "/";
+  const path = resolvePathFromHash(hashValue);
 
   if (path.startsWith(NAV_LINKS.news)) {
     return "news";
@@ -37,12 +43,27 @@ function resolveTabFromHash(hashValue) {
   return "home";
 }
 
+function resolveProjectSlugFromPath(path) {
+  const prefix = `${NAV_LINKS.projects}/`;
+  if (!path.startsWith(prefix)) {
+    return null;
+  }
+
+  const slug = path.slice(prefix.length).split("/")[0];
+  if (!slug || slug === "create") {
+    return null;
+  }
+
+  return slug;
+}
+
 function createInitialNewsLikes() {
   return MINI_NEWS_ITEMS.reduce((acc, item) => ({ ...acc, [item.id]: false }), {});
 }
 
 function App() {
   const [activeTab, setActiveTab] = useState(() => resolveTabFromHash(window.location.hash));
+  const [currentPath, setCurrentPath] = useState(() => resolvePathFromHash(window.location.hash));
   const [aiAssistantEnabled, setAiAssistantEnabled] = useState(true);
   const [aiMode, setAiMode] = useState(true);
   const [isDeckOpen, setIsDeckOpen] = useState(false);
@@ -60,10 +81,14 @@ function App() {
   const canDismiss = !dismissDirection;
   const isNewsPage = activeTab === "news";
   const isProjectsPage = activeTab === "projects";
+  const currentProjectSlug = resolveProjectSlugFromPath(currentPath);
+  const currentProjectDetails = currentProjectSlug ? PROJECT_DETAILS_BY_ID[currentProjectSlug] : null;
+  const isProjectDetailPage = Boolean(currentProjectDetails);
   const usesOverlayHeader = isNewsPage || isProjectsPage;
   const homeNewsItem = MINI_NEWS_ITEMS[0];
 
   const navigateTo = (path) => {
+    setCurrentPath(path);
     window.location.hash = path;
   };
 
@@ -156,6 +181,10 @@ function App() {
     navigateTo(`${NAV_LINKS.projects}/create`);
   };
 
+  const joinProject = () => {
+    // API hook placeholder
+  };
+
   const openFeaturedEvent = (eventItem) => {
     navigateTo(eventItem?.detailsUrl || NAV_LINKS.events);
   };
@@ -233,6 +262,7 @@ function App() {
 
   useEffect(() => {
     const syncTabWithHash = () => {
+      setCurrentPath(resolvePathFromHash(window.location.hash));
       setActiveTab(resolveTabFromHash(window.location.hash));
     };
 
@@ -304,6 +334,12 @@ function App() {
                 onParticipateInEvent={openFeaturedEvent}
                 onBack={handleGoHome}
               />
+            ) : isProjectsPage && isProjectDetailPage ? (
+              <ProjectDetailsPage
+                project={currentProjectDetails}
+                onBack={openProjectsHub}
+                onJoinProject={joinProject}
+              />
             ) : isProjectsPage ? (
               <ProjectHubPage
                 columns={PROJECT_HUB_COLUMNS}
@@ -350,7 +386,7 @@ function App() {
         </div>
 
         <AiChatPanel
-          isVisible={aiMode}
+          isVisible={aiMode && !isProjectDetailPage}
           quickPrompts={QUICK_PROMPTS}
           messages={messages}
           chatInput={chatInput}

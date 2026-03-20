@@ -21,6 +21,7 @@ import bellIcon from "../img/bell-icon.svg";
 import group124Icon from "../img/group-124.svg";
 import gigachatLogo from "../img/gigachat-logo.svg";
 import grokLogo from "../img/grok-logo.svg";
+import plusSmallIcon from "../img/plus-small.svg";
 import heartOutlineIcon from "../img/heart-outline.svg";
 import heartFilledIcon from "../img/heart-filled.svg";
 import shareIcon from "../img/share.svg";
@@ -63,6 +64,7 @@ export const assets = {
   posterTechConf,
   posterTechTalk,
   posterWeb3,
+  plusSmallIcon,
   shareIcon,
   sparkIcon,
   sparklesIconA,

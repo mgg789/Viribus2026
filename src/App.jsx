@@ -5,9 +5,11 @@ import { BottomCards } from "./components/dashboard/BottomCards";
 import { SummaryCards } from "./components/dashboard/SummaryCards";
 import { TopBar } from "./components/layout/TopBar";
 import { NewsPage } from "./components/news/NewsPage";
+import { ProjectHubPage } from "./components/projects/ProjectHubPage";
 import { RecommendationsPanel } from "./components/recommendations/RecommendationsPanel";
 import { INITIAL_CHAT, NAV_LINKS, QUICK_PROMPTS, RECOMMENDATIONS } from "./data/dashboardData";
 import { FEATURED_NEWS_ITEMS, MINI_NEWS_ITEMS } from "./data/newsData";
+import { PROJECT_HUB_COLUMNS } from "./data/projectHubData";
 import { nextAssistantMessage } from "./utils/chatAssistant";
 
 function mapRecommendationsWithInstanceId() {
@@ -57,6 +59,8 @@ function App() {
   const stackedCards = deck.slice(1, 3);
   const canDismiss = !dismissDirection;
   const isNewsPage = activeTab === "news";
+  const isProjectsPage = activeTab === "projects";
+  const usesOverlayHeader = isNewsPage || isProjectsPage;
   const homeNewsItem = MINI_NEWS_ITEMS[0];
 
   const navigateTo = (path) => {
@@ -132,9 +136,24 @@ function App() {
     navigateTo(NAV_LINKS.news);
   };
 
+  const openProjectsHub = () => {
+    setActiveTab("projects");
+    navigateTo(NAV_LINKS.projects);
+  };
+
   const openMiniNews = (newsItem) => {
     setActiveTab("news");
     navigateTo(newsItem?.detailsUrl || NAV_LINKS.news);
+  };
+
+  const openProjectDetails = (project) => {
+    setActiveTab("projects");
+    navigateTo(project?.detailsUrl || NAV_LINKS.projects);
+  };
+
+  const openProjectCreate = () => {
+    setActiveTab("projects");
+    navigateTo(`${NAV_LINKS.projects}/create`);
   };
 
   const openFeaturedEvent = (eventItem) => {
@@ -262,7 +281,7 @@ function App() {
   return (
     <div className="viewport-frame">
       <div className="design-canvas">
-        <div className={`app-shell ${isNewsPage ? "app-shell-news" : ""}`}>
+        <div className={`app-shell ${usesOverlayHeader ? "app-shell-news" : ""}`}>
           <img className="bg-shape bg-shape-top" src={assets.backgroundShape} alt="" />
           <img className="bg-shape bg-shape-bottom" src={assets.backgroundShape} alt="" />
 
@@ -271,10 +290,10 @@ function App() {
             aiAssistantEnabled={aiAssistantEnabled}
             onGoHome={handleGoHome}
             onMenuClick={handleMenuClick}
-            isNewsView={isNewsPage}
+            isNewsView={usesOverlayHeader}
           />
 
-          <main className={`dashboard-layout ${isNewsPage ? "dashboard-layout-news" : ""}`}>
+          <main className={`dashboard-layout ${usesOverlayHeader ? "dashboard-layout-news" : ""}`}>
             {isNewsPage ? (
               <NewsPage
                 miniNewsItems={MINI_NEWS_ITEMS}
@@ -284,6 +303,13 @@ function App() {
                 onOpenMiniNews={openMiniNews}
                 onParticipateInEvent={openFeaturedEvent}
                 onBack={handleGoHome}
+              />
+            ) : isProjectsPage ? (
+              <ProjectHubPage
+                columns={PROJECT_HUB_COLUMNS}
+                onBack={handleGoHome}
+                onCreateProject={openProjectCreate}
+                onOpenProject={openProjectDetails}
               />
             ) : (
               <section className="left-content">
@@ -298,13 +324,13 @@ function App() {
                   isNewsLiked={Boolean(likedNews[homeNewsItem.id])}
                   onToggleNewsLike={toggleNewsLike}
                   onOpenNews={openNewsList}
-                  onOpenProjects={() => navigateTo(NAV_LINKS.projects)}
+                  onOpenProjects={openProjectsHub}
                 />
               </section>
             )}
           </main>
 
-          {!isNewsPage ? (
+          {!usesOverlayHeader ? (
             <RecommendationsPanel
               isOpen={isDeckOpen}
               onToggleOpen={() => setIsDeckOpen((prev) => !prev)}
